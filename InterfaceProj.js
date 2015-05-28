@@ -25,16 +25,20 @@ if (Meteor.isServer) {
 
 if (Meteor.isClient) {
 
-    var time = Blaze.Var(new Date);
-    setInterval(function(){time.set(new Date);}, 1000);
+    Meteor.setInterval(function(){
+      Session.set('time' , new Date);
+    } , 1000);
 
-  Template.header.helpers({
+    //var time = Blaze.Var(new Date);
+    //setInterval(function(){time.set(new Date);}, 1000);
+
+  Template.header.helpers({ 
     timedis : function(){
       //new variable to keep track of the time 
     //then the time is returned in a desired format using a segment of moment js 
-      var out = time.get();
+     // var out = time.get();
     // the format can be changed by referring to moment JS... moment JS is already included in the package 
-      return moment(out).format(" D MMM h:mm:ssa");
+      return moment(Session.get('time')).format(" D MMM h:mm a");
 //      timedis.setInterva(timedis,1000);
     }
   });

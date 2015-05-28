@@ -1,22 +1,20 @@
 <head>
   <title>interface</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 </head>
 
 <body background="">
     {{> header}}
-    <div id="mainbody">
-    <div class="pull-left container" width="50%" >{{> leftcol}}</div>
-    <div class="pull-right container" width="50%" >{{> leftcol}}</div>
-    </div>
+    {{> leftcol}}
  </body>
 
 <template name = "header">
-	<div class="container-fluid">
-	<div class="pull-left">
-		<div class="pull-left"><img src='/logo.jpg' /></div>
-		<div class="titlename pull-right" >Portal</div>
+	<div class="container">  
+	<div class="vc pull-left container-fluid" flex>
+		<div><img src="logo.jpg" />
+		Portal</div>
 	</div>
-	<div class="pull-right">
+	<div class="pull-right container-fluid vertical-center" flex>
 			<h3 class="text-center">{{timedis}}</h3>
 			<h5 class="text-center">Good Morning, User name </h5>
 	</div>
@@ -24,9 +22,9 @@
 </template>
 
 <template name="leftcol">
-<div class="container pull-left" width="50%"> 
-  <div class="container" width="50%">
-    <ul class="nav nav-tabs" style="padding: 5px" id="myTab" role="tablist">
+<div class="container-fluid pull-left" > 
+  <div class="container-fluid" style = "width: 50%">
+    <ul class="nav nav-tabs nav-justified" style="padding: 5px " id="myTab" role="tablist" >
       <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Home</a></li>
       <li role="presentation"><a href="#profile" id="profile-tab" role="tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Profile</a></li>
       <li role="presentation"><a href="#messages" id="messages-tab" role="tab" data-toggle="tab" aria-controls="messages" aria-expanded="false">Messages</a></li>
@@ -46,11 +44,11 @@
         </div>
       </div>
   </div>
-  <div class="container" width="50%">
+  <div class="container-fluid" style = "width: 50%">
     <ul class="nav nav-tabs" style="padding: 5px" id="myTab" role="tablist">
-      <li role="presentation" class="active"><a href="#home" id="home-tab2" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Home</a></li>
-      <li role="presentation"><a href="#profile" id="profile-tab2" role="tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Profile</a></li>
-      <li role="presentation"><a href="#messages" id="messages-tab2" role="tab" data-toggle="tab" aria-controls="messages" aria-expanded="false">Messages</a></li>
+      <li role="presentation" class="active"><a href="#home" id="home-tab2" role="tab" data-toggle="tab" aria-controls="home2" aria-expanded="true">Home</a></li>
+      <li role="presentation"><a href="#profile" id="profile-tab2" role="tab" data-toggle="tab" aria-controls="profile2" aria-expanded="false">Profile</a></li>
+      <li role="presentation"><a href="#messages" id="messages-tab2" role="tab" data-toggle="tab" aria-controls="messages2" aria-expanded="false">Messages</a></li>
     </ul>
       <div id="myTabContent" class="tab-content" style="padding:5px">
         <div role="tabpanel" class="tab-pane fade active in" id="home2" aria-labelledby="home-tab2">
