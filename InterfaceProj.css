@@ -1,13 +1,18 @@
-/* CSS declarations go here */
 
 .titlename {
 	font-family: block;
 	font-size: 40px;
 	padding: 4px;
-} ;
+} 
 
 .vc {
 	vertical-align: middle;
 	float: none;
 	display: inline-block;
+}
+
+.interface {
+	background-image: url('back.jpg');
+	background-repeat: no-repeat;
+	background-position: center;
 }
