@@ -9,3 +9,7 @@ insecure
 mrt:moment
 bootstrap
 autopublish
+http
+selaias:meteor-simpleweather
+
+
