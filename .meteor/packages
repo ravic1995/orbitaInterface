@@ -13,3 +13,6 @@ http
 selaias:meteor-simpleweather
 
 
+iron:router
+accounts-ui
+accounts-google

@@ -5,7 +5,11 @@
 </head>
 
 <body class="interface">
-    {{> header}}
+   
+</body>
+
+<template name="main">
+{{> header}}
     <div class="container">    
     <div class="container-fluid pull-left" float="left" style="width:55%" flex>
     {{> leftcol}}  
@@ -14,7 +18,8 @@
       {{> rightcol}} 
     </div>
     </div>
-    </body>
+    {{> googleDrive}}    
+</template>
 
 <template name = "header">
 	<div class="container">  
@@ -105,3 +110,13 @@
 </div>
 </template>
 
+<template name="googleDrive">
+<iframe src="https://drive.google.com/embeddedfolderview?id=0B8cgx-HjKnS0SUVmWnFmNU5vY3c#list" width="800" height="600" frameborder="0"></iframe>
+</template>
+
+<template name="login">
+<div class="text-center container-fluid">
+  {{> loginButtons}}
+  <button type="button" class="btn btn-default">IVLE Login </button>
+</div>
+</template>

@@ -24,6 +24,12 @@ if (Meteor.isServer) {
 */
 
 if (Meteor.isClient) {
+  Session.set('token' , null);
+ // Meteor.startup(function(){
+ //   if(Session.get('token')=== null){
+ //     Router.go('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://localhost:3000')  
+ //   } 
+ // });
 
     Meteor.setInterval(function(){
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -38,6 +44,7 @@ if (Meteor.isClient) {
     //860925b0e2933e51a216953566d0964d--weather appid
 
 
+   // https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://www.locahhost:3000
   Template.header.helpers({ 
     timedis : function(){
       //new variable to keep track of the time 
@@ -76,6 +83,13 @@ if (Meteor.isClient) {
       return output;
     }
 });
+
+  Template.login.events({
+    'click button' : function(event){
+      window.location.assign('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000');
+//      Router.render('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://localhost:3000');
+    }
+  });
 }
 
 if (Meteor.isServer) {
