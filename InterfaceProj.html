@@ -4,8 +4,8 @@
     
 </head>
 
-<body class="interface">
-   
+<body class="interface" >
+  
 </body>
 
 <template name="main">
@@ -18,7 +18,7 @@
       {{> rightcol}} 
     </div>
     </div>
-    {{> googleDrive}}    
+    <!--{{> googleDrive}}-->
 </template>
 
 <template name = "header">
@@ -37,17 +37,18 @@
 </template>
 
 <template name="leftcol">
-<div class="container-fluid pull-left" style="background-color: red" > 
-  <div class="container-fluid" style="background-color: blue ">
+<div class="container-fluid pull-left"  > 
+  <div class="container-fluid" >
     <ul class="nav nav-tabs nav-justified" style="padding: 5px " id="myTab" role="tablist" >
-      <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Home</a></li>
+      <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Modules List</a></li>
       <li role="presentation"><a href="#profile" id="profile-tab" role="tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Profile</a></li>
       <li role="presentation"><a href="#messages" id="messages-tab" role="tab" data-toggle="tab" aria-controls="messages" aria-expanded="false">Messages</a></li>
     </ul>
     <div id="myTabContent" class="tab-content" style="padding:5px">
         <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod Home 
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p> 
+         {{#each module}}
+          <li>{{this.CourseCode}} || {{this.CourseAcadYear}}</li>
+          {{/each}}
         </div>
         <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod profile
@@ -108,6 +109,14 @@
   </ul>
   </div>
 </div>
+<div class="panel panel-default">
+  <div id="calendar">
+    <button class="btn btn-default" id="cv">View Calendar</button>
+  </div>
+  <div class="ch">
+  {{> calendar}}
+  </div>
+</div>
 </template>
 
 <template name="googleDrive">
@@ -120,3 +129,46 @@
   <button type="button" class="btn btn-default">IVLE Login </button>
 </div>
 </template>
+
+<template name= "calendar1">
+<div class="modal">
+{{> calendar}}
+</div>
+</template>
+
+
+<template name="myTemplate">
+<div class="padding">
+        {{ > ReactiveFullcalendar options=calendarOptions }}
+        {{> editEvent}}
+</div>
+</template>
+
+<template name="editEvent">
+<!--Modal Dialog-->
+
+  <div class="modal fade in hide" id="EditEventModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+      <h4 class="modal-title">Enter event</h4>
+      </div>
+      <div class="modal-body">
+      <label for="title">Event: </label><input type="text" class="title" name="title" value="" placeholder="Enter task" id="title">
+      </div>
+      <div class="modal-footer">
+      <a href="#" class="btn btn-danger remove">Delete</a>
+      <a href="#" class="btn btn-primary save">Save</a>
+      <a href="#" class="btn close" data-dismiss="modal">Cancel</a>
+      </div>
+    </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+
+</template>
+
+
+
+<!-- A modal that contains the bigger view of the image selected -->
