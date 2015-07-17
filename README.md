@@ -9,7 +9,7 @@ Meteor JS and also node framework.
 
 To deploy the app on the local system do the following. 
 
-1. Install node js onto the system  from nodejs.org 
+1. Install node js onto the system  from https://nodejs.org/ 
 2. Install meteor JS  by typing the following into terminal  <br>
    <code> curl https://install.meteor.com/ | sh </code> <br>
 	also documentaion can be found on meteor.com 
