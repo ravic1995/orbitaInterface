@@ -23,13 +23,13 @@
 
 <template name = "header">
 	<div class="container">  
-	<div class="vc pull-left container-fluid" style="background-color: blue" flex >
+	<div class="vc pull-left container-fluid"  flex >
 		
     <img src='logo.jpg' class="img-rounded" style="width:140px" />
 		Portal
     
 	</div>
-	<div class="pull-right container-fluid" style="background-color: red" flex>
+	<div class="pull-right container-fluid"  flex>
 			<h3 class="text-center" style="color : white">{{timedis}}</h3>
 			<h5 class="text-center" style="color : white">Good Morning, User name </h5>
 	</div>
@@ -60,7 +60,7 @@
         </div>
       </div>
   </div>
-  <div class="container-fluid" style="background-color: blue">
+  <div class="container-fluid" >
     <ul class="nav nav-tabs" style="padding: 5px" id="myTab" role="tablist">
       <li role="presentation" class="active"><a href="#home2" id="home-tab2" role="tab" data-toggle="tab" aria-controls="home2" aria-expanded="true">Home</a></li>
       <li role="presentation"><a href="#profile2" id="profile-tab2" role="tab" data-toggle="tab" aria-controls="profile2" aria-expanded="false">Profile</a></li>
@@ -86,7 +86,7 @@
 
 <template name = "rightcol">
   
-  <div class="panel panel-default" style="background-color: green" >
+  <div class="panel panel-default"  >
   <div class="panel-heading" >
     <h3 class="panel-title text-center">{{date}} | {{weather2}} </h3>
     <img src= "{{icontag}}" >
@@ -97,7 +97,7 @@
     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
   </div>
 </div>
-<div class="panel panel-default" style="background-color: white">
+<div class="panel panel-default" >
   <div class="panel-heading" >
     <h3 class="panel-title text-center">Worries of tomorrow</h3>
   </div>
@@ -113,8 +113,8 @@
   <div id="calendar">
     <button class="btn btn-default" id="cv">View Calendar</button>
   </div>
-  <div class="ch">
-  {{> calendar}}
+  <div class="padding">
+  {{> todo}}
   </div>
 </div>
 </template>
@@ -124,7 +124,7 @@
 </template>
 
 <template name="login">
-<div class="text-center container-fluid">
+<div class="text-center container-fluid modal" id="login">
   {{> loginButtons}}
   <button type="button" class="btn btn-default">IVLE Login </button>
 </div>
@@ -137,38 +137,70 @@
 </template>
 
 
-<template name="myTemplate">
-<div class="padding">
-        {{ > ReactiveFullcalendar options=calendarOptions }}
-        {{> editEvent}}
-</div>
+
+
+<template name="todo">
+  <div class="container">
+    <header>
+      <h1>Todo List ({{incompleteCount}})</h1>
+
+      <label class="hide-completed">
+        <input type="checkbox" checked="{{hideCompleted}}" />
+        Hide Completed Tasks
+      </label>
+
+      {{#if currentUser}}
+        <form class="new-task form-group">
+           <lable for="Task">Task</lable>
+          <input type="text" name="text" placeholder="Type to add new tasks" />
+          <br>
+          <lable for="priority"> Priority :</lable>
+
+          <select class="form-control" name="priority" id="priority">
+          <br>
+        <option value="1">Low</option>
+        <option value="2">Medium</option>
+        <option value="3">High</option>
+      </select>
+          <!-- <input type="text"  name="priority" placeholder="select priority" list="datalist1" autocomplete="off" />
+          <datalist id="datalist1">
+    <option value="1">Low</option>
+    <option value="2">Medium</option>
+    <option value="3">High</option>
+    </datalist>-->
+    <button type="submit"> Submit</button>
+        </form>
+      {{/if}}
+    </header>
+
+    <ul>
+      {{#each tasks}}
+        {{> task}}
+      {{/each}}
+    </ul>
+  </div>
 </template>
 
-<template name="editEvent">
-<!--Modal Dialog-->
 
-  <div class="modal fade in hide" id="EditEventModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" tabindex="-1">
-    <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-      <h4 class="modal-title">Enter event</h4>
-      </div>
-      <div class="modal-body">
-      <label for="title">Event: </label><input type="text" class="title" name="title" value="" placeholder="Enter task" id="title">
-      </div>
-      <div class="modal-footer">
-      <a href="#" class="btn btn-danger remove">Delete</a>
-      <a href="#" class="btn btn-primary save">Save</a>
-      <a href="#" class="btn close" data-dismiss="modal">Cancel</a>
-      </div>
-    </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+<template name="task">
+  <li class="{{#if checked}}checked{{/if}} {{#if private}}private{{/if}}">
+    <button class="delete">&times;</button>
 
+    <input type="checkbox" checked="{{checked}}" class="toggle-checked" />
 
+    {{#if isOwner}}
+      <button class="toggle-private">
+        {{#if private}}
+          Private    
+        {{else}}
+          Public
+        {{/if}}
+      </button>
+    {{/if}}
+
+    <span class="text"><strong>{{username}}</strong> - {{text}}</span>
+  </li>
 </template>
-
 
 
 <!-- A modal that contains the bigger view of the image selected -->
