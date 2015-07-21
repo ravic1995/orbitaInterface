@@ -29,7 +29,7 @@ Todos = new Mongo.Collection('todos');//Metoer.userId() == todo == priority
 
 if (Meteor.isClient) {
   
-   Template.main.created = function(){
+ /*  Template.main.created = function(){
         if(Session.get('token1')===undefined){
           var controller = Iron.controller();
 
@@ -41,7 +41,7 @@ if (Meteor.isClient) {
           //console.log(Session.get('token1'));
           }
     };
-  
+  */
  // Session.set('token1' , null);
  // Meteor.startup(function(){
  //   if(Session.get('token')=== null){
@@ -51,17 +51,18 @@ if (Meteor.isClient) {
 
 
    
-    Meteor.setInterval(function(){
-      Session.set('time' , new Date);
-    } , 5000);
+Meteor.setInterval(function(){
+  Session.set('time' , new Date);
+} , 5000);
+
     //Meteor.subscribe('calendars');
-    Meteor.subscribe('calendar', function () {
+Meteor.subscribe('calendar', function () {
   Session.set('superCalendarReady', true);
 });
     Meteor.subscribe('tokens');
     Meteor.subscribe('todos');
     
-    
+    Session.get('token' , undefined);
 
    // https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://www.locahhost:3000
   Template.header.helpers({ 
@@ -114,11 +115,9 @@ Modal.allowMultiple = true
       out2 = res.weather[0].icon;
       Session.set('out' , out);
       Session.set('out2' , out2);      
-
 });
       return Session.get('out');  
 },
-
     icontag : function(){
       var output = "http://openweathermap.org/img/w/" + Session.get('out2') + ".png";
       return output;
@@ -127,7 +126,12 @@ Modal.allowMultiple = true
 
   Template.login.events({
     'click button' : function(event){
-     window.location.assign('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000');
+        Router.go('/ivlelogin' , function(){
+  this.render('ivleLogin');
+});
+
+ //    window.location.assign('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000');
+ 
  //    Router.render('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://localhost:3000');
        
        //var token = window.location.href.split('=')[1];
@@ -216,6 +220,97 @@ var self = this;
     });  
 // Do something custom.
 };
+
+Template.ivleLogin.rendered = function(){
+  var APIKey = "0J5cKRFGUQASyFHiJ07v4";
+    var APIDomain = "https://ivle.nus.edu.sg/";
+    var APIUrl = APIDomain + "api/lapi.svc/";
+    var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000/ivleLogin";
+
+    var myModuleInfo = null;
+
+    //function to get the query string parameters
+    var search = function () {
+        var p = window.location.search.substr(1).split(/\&/), l = p.length, kv, r = {};
+        while (l--) {
+            kv = p[l].split(/\=/);
+            r[kv[0]] = kv[1] || true; //if no =value just set it as true
+        }
+        console.log(r);
+        return r;
+    } ();
+
+
+    //variable to store the Authentication Token
+    var Token = "";
+
+    //check query string for search token
+    if (search.token && search.token.length > 0 && search.token != 'undefined') {
+        Token = search.token;
+        Session.set('token' , Token);
+        //alert(Token);
+        console.log(Session.get('token'));
+    }
+
+    $(document).ready(function () {
+        if (Token.length < 1) {
+            window.location = LoginURL;
+        }
+        else {
+            //$('#lbl_Token').html(Token);
+
+            Populate_UserName();
+
+            Populate_Module();
+
+        }
+    });
+
+    function Populate_UserName() {
+        var url = APIUrl + "UserName_Get?output=json&callback=?&APIKey=" + APIKey + "&Token=" + Token;
+        $('#dbg_UserInfo').append("<span>Request: " + url + "</span><br />");
+
+        jQuery.getJSON(url, function (data) {
+            $('#lbl_Name').html(data);
+            $('#dbg_UserInfo').append("<span>Response: " + data + "</span>");
+        });
+    }
+
+    function Populate_Module() {
+        var ModuleURL = APIUrl + "Modules?APIKey=" + APIKey + "&AuthToken=" + Token + "&Duration=1&IncludeAllInfo=false&output=json&callback=?";
+        $('#dbg_Modules').append("<span>Request: " + ModuleURL + "</span><br />");
+
+        //Get all the modules belonging to me
+        jQuery.getJSON(ModuleURL, function (data) {
+            $('#dbg_Modules').append("<span>Response: " + data + "</span>");
+            myModuleInfo = data;
+
+
+            var lbl_Module = "";
+            for (var i = 0; i < data.Results.length; i++) {
+                var m = data.Results[i];
+
+                //output the course code, acadyear and coursename
+                lbl_Module += m.CourseCode + " " + m.CourseAcadYear + " - " + m.CourseName;
+
+                //if there's new notifications add it in at the end
+                if (m.Badge > 0)
+                    lbl_Module += " (" + m.Badge + ")";
+
+                //put a line break
+                lbl_Module += "<br />";
+
+                //get the tools belonging to this module
+                lbl_Module += "<span id='announcement_" + m.ID + "' />";
+                lbl_Module += "<span id='forum_" + m.ID + "' />";
+                lbl_Module += "<span id='workbin_" + m.ID + "' />";
+            }
+
+            $('#lbl_Modules').html(lbl_Module);
+        });
+    }
+    Router.go('/');
+}
 
   Template.todo.events({
     "submit .new-task": function (event) {
