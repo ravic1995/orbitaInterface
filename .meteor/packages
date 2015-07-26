@@ -7,7 +7,6 @@
 meteor-platform
 mrt:moment
 bootstrap
-http
 
 iron:router
 accounts-ui
@@ -15,3 +14,4 @@ accounts-google
 peppelg:bootstrap-3-modal
 mrt:jquery-ui
 supercalendar
+dandv:http-more

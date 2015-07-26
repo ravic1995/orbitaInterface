@@ -27,44 +27,17 @@ Todos = new Mongo.Collection('todos');//Metoer.userId() == todo == priority
 //Calendars = new Mongo.Collection('calendars');//
 
 
-if (Meteor.isClient) {
-  
- /*  Template.main.created = function(){
-        if(Session.get('token1')===undefined){
-          var controller = Iron.controller();
-
-    // reactively return the value of postId
-    var token =  controller.state.get('token');
-    Session.set('token1' , token);
-   //  window.location.assign('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000');
-         // Session.set('token1' , window.location.href.split('=')[1]);
-          //console.log(Session.get('token1'));
-          }
-    };
-  */
- // Session.set('token1' , null);
- // Meteor.startup(function(){
- //   if(Session.get('token')=== null){
- //     Router.go('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://localhost:3000')  
- //   } 
- // });
-
-
-   
+if (Meteor.isClient) { 
 Meteor.setInterval(function(){
   Session.set('time' , new Date);
 } , 5000);
 
-    //Meteor.subscribe('calendars');
 Meteor.subscribe('calendar', function () {
   Session.set('superCalendarReady', true);
 });
     Meteor.subscribe('tokens');
     Meteor.subscribe('todos');
     
-    Session.get('token' , undefined);
-
-   // https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://www.locahhost:3000
   Template.header.helpers({ 
     timedis : function(){
       //new variable to keep track of the time 
@@ -80,6 +53,7 @@ Meteor.subscribe('calendar', function () {
     module : function(){
       var module = Meteor.call('modules',function(err,res){
         console.log(res);
+        //var results = res.data.Results;
         var results = res.data.Results;
         console.log(results);
         Session.set('r' , results)
@@ -93,14 +67,8 @@ Modal.allowMultiple = true
   Template.rightcol.events({
     'click #cv' : function(e,t){
         e.preventDefault();
-      setTimeout(function(){
-        Modal.show('calendar1')
-    }, 3)
-    }, 
-    'mouseenter .ch' : function(e,t){
-      e.preventDefault();
-      Modal.show('calendar1')
-    }
+        $('#calendar').modal('show');
+    } 
   });
 
   Template.rightcol.helpers({
@@ -110,7 +78,6 @@ Modal.allowMultiple = true
     weather2 : function(){
       var out="" ; 
       var currWeather = Meteor.call('weather' , function(err,res){
-      console.log(res);
       out = res.weather[0].description;
       out2 = res.weather[0].icon;
       Session.set('out' , out);
@@ -123,28 +90,30 @@ Modal.allowMultiple = true
       return output;
     }
 });
+if(!(Meteor.loggingIn() || Meteor.user())){
+    Blaze.render(Template.login , document.body );
+    $('#login').modal('show');
+} 
+
+/*  if(!Meteor.userId()){
+    Blaze.render(Template.login , document.body );
+    //$('#login').modal('show');
+    //Router.go('/login');
+    $('#login').modal('show');
+  }*/
 
   Template.login.events({
     'click button' : function(event){
         Router.go('/ivlelogin' , function(){
-  this.render('ivleLogin');
-});
-
- //    window.location.assign('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000');
- 
- //    Router.render('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://localhost:3000');
-       
-       //var token = window.location.href.split('=')[1];
-       //var t = Meteor.call('getToken' , function(err,token){
-        //console.log(token);
-        //Session.set('token' , token)
-       //console.log(Session.get('token'));
-       //})
-      //Session.set('token' , token)
-     // console.log(Session.get('token'));
+        this.render('ivleLogin');
+      }); 
     }
   });
 
+
+//use onBefore actions as well as on after 
+//render page using the router and the routing this ?? 
+//make the template on rendered as a modal
 //////////
 /*Template.myTemplate.dayClick = function(date,jsEvent,view){
   $('#EditEventModal').modal();
@@ -154,6 +123,7 @@ Modal.allowMultiple = true
 
               console.log('click successful');
 }*/
+
 Template.task.events({
     "click .toggle-checked": function () {
       // Set the checked property to the opposite of its current value
@@ -184,7 +154,6 @@ Template.task.events({
 
 SuperCalendar.rendered = function () {
 var self = this;
-
     self.autorun(function () {
       if (! Session.get('superCalendarReady', true) ||
           typeof Calendar === 'undefined') {
@@ -218,8 +187,12 @@ var self = this;
         }
       });
     });  
-// Do something custom.
 };
+
+
+Template.login.rendered = function(){
+  $('#login').modal('show');
+}
 
 Template.ivleLogin.rendered = function(){
   var APIKey = "0J5cKRFGUQASyFHiJ07v4";
@@ -320,12 +293,6 @@ Template.ivleLogin.rendered = function(){
       console.log(text +" " + priority);
 
        Meteor.call('todoInsert' , text , priority);
-      //Todos.insert({
-        //text: text,
-       // createdAt: new Date(),            // current time
-       // owner: Meteor.userId(),           // _id of logged in user
-       // username: Meteor.user().username  // username of logged in user
-     // });
 
       // Clear form
       event.target.text.value = "";
@@ -338,31 +305,19 @@ Template.ivleLogin.rendered = function(){
       Session.set("hideCompleted", event.target.checked);
     }
   });
-    ////////
 }
 
-Meteor.methods({
+/*Meteor.methods({
     weather : function(){        
-//     var url = "http://api.openweathermap.org/data/2.5/weather?q=singapore&APPID=860925b0e2933e51a216953566d0964d";
-  //  var res = "";
     var t = HTTP.get("http://api.openweathermap.org/data/2.5/weather?q=singapore&APPID=860925b0e2933e51a216953566d0964d").data;
-    //t = t.weather.description;
-
-   // var n = t;
-    //Session.set('to' , n);
-    //res = n;
     return t;
   },
     addCalendarEvents : function(date , content){
       Calendars.insert({userId : Meteor.userId() , date : date , content : content})
     },
     modules : function(){
-      var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=4DD98A4C7FF723C0FBFDE2965B5ED3EBF4F68AF8D58E3E043A9BD9B076FD22B0292B01595C97115352E3FED29546ED4FA0A9988A100C41A5FCCDA23EE7A0F83CBCE99EBB6F5828AA5F7B49D908139232B955BF4471964B82A117A0DF718C05EB5BA6ED9484FE18DEA814D1C2A6CEEB5AE226727F2B5C87F27F5C8ED74DE8B405CC29EDAEE89784A14ECFCD51E350393F61CB8AA42F17CBBB13ADFF8ABF5CF3A7CE75C1DE79882D695BAC4F9625FF431D822404C8ABD9932512F96CA8C726534211A5CF0C0476844C6AD82F8F46FE26D4A9C09B6C94D500AEF41E33FF8D4A488B29E6B57F9BD9E04CE6A947CD5BD10036');
+      var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=4DD98A4C7FF723C0FBFDE2965B5ED3EBF4F68AF8D58E3E043A9BD9B076FD22B0292B01595C97115352E3FED29546ED4FA0A9988A100C41A5FCCDA23EE7A0F83CBCE99EBB6F5828AA5F7B49D908139232B955BF4471964B82A117A0DF718C05EB5BA6ED9484FE18DEA814D1C2A6CEEB5AE226727F2B5C87F27F5C8ED74DE8B405CC29EDAEE89784A14ECFCD51E350393F61CB8AA42F17CBBB13ADFF8ABF5CF3A7CE75C1DE79882D695BAC4F9625FF431D822404C8ABD9932512F96CA8C726534211A5CF0C0476844C6AD82F8F46FE26D4A9C09B6C94D500AEF41E33FF8D4A488B29E6B57F9BD9E04CE6A947CD5BD10036' , {rejectUnauthorized: false});
       return t; 
-    },
-    getToken : function(){
-      var token = HTTP.get('https://ivle.nus.edu.sg/api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=https://localhost:3000');
-      return token;
     },
 
     todoInsert : function(text,priority){
@@ -374,14 +329,42 @@ Meteor.methods({
         username: Meteor.user().username  // username of logged in user
       });
     } 
-  });
-
-
+  });*/
 
 
 
 if (Meteor.isServer) {
-  Meteor.startup(function () {
+  Meteor.methods({
+    weather : function(){        
+    var t = HTTP.get("http://api.openweathermap.org/data/2.5/weather?q=singapore&APPID=860925b0e2933e51a216953566d0964d").data;
+    return t;
+  },
+    addCalendarEvents : function(date , content){
+      Calendars.insert({userId : Meteor.userId() , date : date , content : content})
+    },
+    modules : function(){
+      var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=4DD98A4C7FF723C0FBFDE2965B5ED3EBF4F68AF8D58E3E043A9BD9B076FD22B0292B01595C97115352E3FED29546ED4FA0A9988A100C41A5FCCDA23EE7A0F83CBCE99EBB6F5828AA5F7B49D908139232B955BF4471964B82A117A0DF718C05EB5BA6ED9484FE18DEA814D1C2A6CEEB5AE226727F2B5C87F27F5C8ED74DE8B405CC29EDAEE89784A14ECFCD51E350393F61CB8AA42F17CBBB13ADFF8ABF5CF3A7CE75C1DE79882D695BAC4F9625FF431D822404C8ABD9932512F96CA8C726534211A5CF0C0476844C6AD82F8F46FE26D4A9C09B6C94D500AEF41E33FF8D4A488B29E6B57F9BD9E04CE6A947CD5BD10036' , {rejectUnauthorized: false});
+     /*var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules' , {
+       params : {
+        APIKey : '0J5cKRFGUQASyFHiJ07v4',
+        AuthToken : '4DD98A4C7FF723C0FBFDE2965B5ED3EBF4F68AF8D58E3E043A9BD9B076FD22B0292B01595C97115352E3FED29546ED4FA0A9988A100C41A5FCCDA23EE7A0F83CBCE99EBB6F5828AA5F7B49D908139232B955BF4471964B82A117A0DF718C05EB5BA6ED9484FE18DEA814D1C2A6CEEB5AE226727F2B5C87F27F5C8ED74DE8B405CC29EDAEE89784A14ECFCD51E350393F61CB8AA42F17CBBB13ADFF8ABF5CF3A7CE75C1DE79882D695BAC4F9625FF431D822404C8ABD9932512F96CA8C726534211A5CF0C0476844C6AD82F8F46FE26D4A9C09B6C94D500AEF41E33FF8D4A488B29E6B57F9BD9E04CE6A947CD5BD10036'
+       },
+       {rejectUnauthorized: false}
+     });*/
+      return t; 
+    },
+    
+    todoInsert : function(text,priority){
+       Todos.insert({
+        text: text,
+        priority : priority,
+        createdAt: new Date(),            // current time
+        owner: Meteor.userId(),           // _id of logged in user
+        username: Meteor.user().username  // username of logged in user
+      });
+    } 
+  });
+Meteor.startup(function () {
     Meteor.publish('calendar', function () {
      return Calendar.find();
     });
@@ -391,8 +374,5 @@ if (Meteor.isServer) {
     Meteor.publish('tokens' , function(){
       return Tokens.find();
     });
-    
-    
-    // code to run on server at startup
-  });
+   });
 }

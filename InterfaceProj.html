@@ -85,7 +85,6 @@
 </template>
 
 <template name = "rightcol">
-  
   <div class="panel panel-default"  >
   <div class="panel-heading" >
     <h3 class="panel-title text-center">{{date}} | {{weather2}} </h3>
@@ -123,21 +122,28 @@
 <iframe src="https://drive.google.com/embeddedfolderview?id=0B8cgx-HjKnS0SUVmWnFmNU5vY3c#list" width="800" height="600" frameborder="0"></iframe>
 </template>
 
+
+
+<!--LOGIN --> 
+
 <template name="login">
 <div class="text-center container-fluid modal" id="login">
   {{> loginButtons}}
   <button type="button" class="btn btn-default">IVLE Login </button>
-</div>
+  </div>
 </template>
 
+
+<!--Calendar --> 
+
 <template name= "calendar1">
-<div class="modal">
+<div class="modal" id="calendar" >
 {{> calendar}}
 </div>
 </template>
 
 
-
+<!--TODO-->
 
 <template name="todo">
   <div class="container">
@@ -201,6 +207,3 @@
     <span class="text"><strong>{{username}}</strong> - {{text}}</span>
   </li>
 </template>
-
-
-<!-- A modal that contains the bigger view of the image selected -->
