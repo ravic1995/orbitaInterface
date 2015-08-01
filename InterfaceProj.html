@@ -39,32 +39,27 @@
 <template name="leftcol">
 <div class="container-fluid pull-left"  > 
   <div class="container-fluid" >
-    <ul class="nav nav-tabs nav-justified" style="padding: 5px " id="myTab" role="tablist" >
-      <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Modules List</a></li>
-      <li role="presentation"><a href="#profile" id="profile-tab" role="tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Profile</a></li>
-      <li role="presentation"><a href="#messages" id="messages-tab" role="tab" data-toggle="tab" aria-controls="messages" aria-expanded="false">Messages</a></li>
+    <ul class="nav nav-tabs nav-justified flex" style="padding: 1px " id="myTab" role="tablist" >
+      {{#each module}}    
+      <li role="presentation" class="active"><a href="#{{this.CourseCode}}" id="{{this.CourseCode}}-tab" role="tab" data-toggle="tab" aria-controls="{{this.CourseCode}}">{{this.CourseCode}}</a>
+      </li>
+      {{/each}}
     </ul>
     <div id="myTabContent" class="tab-content" style="padding:5px">
-        <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
-         {{#each module}}
-          <li>{{this.CourseCode}} || {{this.CourseAcadYear}}</li>
-          {{/each}}
+      {{#each module}}
+        <div role="tabpanel" class="tab-pane fade in" id="{{this.CourseCode}}" aria-labelledby="{{this.CourseCode}}">
+         <p> {{this.CourseCode}} || {{this.CourseAcadYear}}</p>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod profile
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p> 
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="messages" aria-labelledby="messages-tab">
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod messages
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p> 
-        </div>
-      </div>
+      {{/each}}
+    </div>
   </div>
+
+
   <div class="container-fluid" >
     <ul class="nav nav-tabs" style="padding: 5px" id="myTab" role="tablist">
-      <li role="presentation" class="active"><a href="#home2" id="home-tab2" role="tab" data-toggle="tab" aria-controls="home2" aria-expanded="true">Home</a></li>
-      <li role="presentation"><a href="#profile2" id="profile-tab2" role="tab" data-toggle="tab" aria-controls="profile2" aria-expanded="false">Profile</a></li>
-      <li role="presentation"><a href="#messages2" id="messages-tab2" role="tab" data-toggle="tab" aria-controls="messages2" aria-expanded="false">Messages</a></li>
+      <li role="presentation" class="active"><a href="#home2" id="home-tab2" role="tab" data-toggle="tab" aria-controls="home2" >Home</a></li>
+      <li role="presentation"><a href="#profile2" id="profile-tab2" role="tab" data-toggle="tab" aria-controls="profile2" >Profile</a></li>
+      <li role="presentation"><a href="#messages2" id="messages-tab2" role="tab" data-toggle="tab" aria-controls="messages2" >Messages</a></li>
     </ul>
       <div id="myTabContent" class="tab-content" style="padding:5px">
         <div role="tabpanel" class="tab-pane fade active in" id="home2" aria-labelledby="home-tab2">
@@ -89,11 +84,6 @@
   <div class="panel-heading" >
     <h3 class="panel-title text-center">{{date}} | {{weather2}} </h3>
     <img src= "{{icontag}}" >
-  </div>
-  <div class="panel-body">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</p>
   </div>
 </div>
 <div class="panel panel-default" >

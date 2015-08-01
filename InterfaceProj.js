@@ -26,6 +26,19 @@ Tokens = new Mongo.Collection('tokens');//Meteor.userId()==token ;
 Todos = new Mongo.Collection('todos');//Metoer.userId() == todo == priority 
 //Calendars = new Mongo.Collection('calendars');//
 
+var Schemas = {};
+Schemas.Token = new SimpleSchema({
+  userId :{
+    type : String,
+    label : "userId",
+  } ,
+  token :{
+    type : String , 
+    label : "tokenOfUser",
+  }
+});
+Tokens.attachSchema(Schemas.Token);
+
 
 if (Meteor.isClient) { 
 Meteor.setInterval(function(){
@@ -223,6 +236,7 @@ Template.ivleLogin.rendered = function(){
         Session.set('token' , Token);
         //alert(Token);
         console.log(Session.get('token'));
+        Meteor.call('tokenInsert' , Session.get('token'));
     }
 
     $(document).ready(function () {
@@ -342,16 +356,20 @@ if (Meteor.isServer) {
     addCalendarEvents : function(date , content){
       Calendars.insert({userId : Meteor.userId() , date : date , content : content})
     },
-    modules : function(){
-      var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=4DD98A4C7FF723C0FBFDE2965B5ED3EBF4F68AF8D58E3E043A9BD9B076FD22B0292B01595C97115352E3FED29546ED4FA0A9988A100C41A5FCCDA23EE7A0F83CBCE99EBB6F5828AA5F7B49D908139232B955BF4471964B82A117A0DF718C05EB5BA6ED9484FE18DEA814D1C2A6CEEB5AE226727F2B5C87F27F5C8ED74DE8B405CC29EDAEE89784A14ECFCD51E350393F61CB8AA42F17CBBB13ADFF8ABF5CF3A7CE75C1DE79882D695BAC4F9625FF431D822404C8ABD9932512F96CA8C726534211A5CF0C0476844C6AD82F8F46FE26D4A9C09B6C94D500AEF41E33FF8D4A488B29E6B57F9BD9E04CE6A947CD5BD10036' , {rejectUnauthorized: false});
-     /*var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules' , {
-       params : {
-        APIKey : '0J5cKRFGUQASyFHiJ07v4',
-        AuthToken : '4DD98A4C7FF723C0FBFDE2965B5ED3EBF4F68AF8D58E3E043A9BD9B076FD22B0292B01595C97115352E3FED29546ED4FA0A9988A100C41A5FCCDA23EE7A0F83CBCE99EBB6F5828AA5F7B49D908139232B955BF4471964B82A117A0DF718C05EB5BA6ED9484FE18DEA814D1C2A6CEEB5AE226727F2B5C87F27F5C8ED74DE8B405CC29EDAEE89784A14ECFCD51E350393F61CB8AA42F17CBBB13ADFF8ABF5CF3A7CE75C1DE79882D695BAC4F9625FF431D822404C8ABD9932512F96CA8C726534211A5CF0C0476844C6AD82F8F46FE26D4A9C09B6C94D500AEF41E33FF8D4A488B29E6B57F9BD9E04CE6A947CD5BD10036'
-       },
-       {rejectUnauthorized: false}
-     });*/
+   /* modules : function(token){
+      var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=' + token , {rejectUnauthorized: false});
       return t; 
+    },
+    */
+    modules : function(){
+      var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=' + Tokens.findOne({userId : Meteor.userId()}).token , {rejectUnauthorized: false});
+      return t; 
+    },
+    tokenInsert : function(token){
+       Tokens.insert({
+        userId : Meteor.userId(),
+        token : token
+       }); 
     },
     
     todoInsert : function(text,priority){
