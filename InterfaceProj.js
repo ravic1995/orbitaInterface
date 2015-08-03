@@ -201,7 +201,8 @@ var self = this;
       });
     });  
 };
-
+//client id : 578942301059-us39fcth5lc1fap3mdfub3mkpnsefolo.apps.googleusercontent.com
+//secret : i7LXHx9OTkBXHw6DiPDakiGq
 
 Template.login.rendered = function(){
   $('#login').modal('show');
@@ -211,7 +212,7 @@ Template.ivleLogin.rendered = function(){
   var APIKey = "0J5cKRFGUQASyFHiJ07v4";
     var APIDomain = "https://ivle.nus.edu.sg/";
     var APIUrl = APIDomain + "api/lapi.svc/";
-    var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000/ivleLogin";
+    var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://nusinterface.meteor.com/ivleLogin";
 
     var myModuleInfo = null;
 
