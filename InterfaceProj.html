@@ -41,13 +41,13 @@
   <div class="container-fluid" >
     <ul class="nav nav-tabs nav-justified flex" style="padding: 1px " id="myTab" role="tablist" >
       {{#each module}}    
-      <li role="presentation" class="active"><a href="#{{this.CourseCode}}" id="{{this.CourseCode}}-tab" role="tab" data-toggle="tab" aria-controls="{{this.CourseCode}}">{{this.CourseCode}}</a>
+      <li role="presentation" ><a href="#{{this.CourseCode}}" role="tab" data-toggle="tab" aria-controls="{{this.CourseCode}}">{{this.CourseCode}}</a>
       </li>
       {{/each}}
     </ul>
     <div id="myTabContent" class="tab-content" style="padding:5px">
       {{#each module}}
-        <div role="tabpanel" class="tab-pane fade in" id="{{this.CourseCode}}" aria-labelledby="{{this.CourseCode}}">
+        <div role="tabpanel" class="tab-pane fade in" id="{{this.CourseCode}}">
          <p> {{this.CourseCode}} || {{this.CourseAcadYear}}</p>
         </div>
       {{/each}}
@@ -123,6 +123,27 @@
   </div>
 </template>
 
+<template name="trial">
+<div>
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" ><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane" id="home">...</div>
+    <div role="tabpanel" class="tab-pane" id="profile">...</div>
+    <div role="tabpanel" class="tab-pane" id="messages">...</div>
+    <div role="tabpanel" class="tab-pane" id="settings">...</div>
+  </div>
+
+</div>
+</template>
 
 <!--Calendar --> 
 
