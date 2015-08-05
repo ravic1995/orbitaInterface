@@ -212,6 +212,7 @@ Template.ivleLogin.rendered = function(){
   var APIKey = "0J5cKRFGUQASyFHiJ07v4";
     var APIDomain = "https://ivle.nus.edu.sg/";
     var APIUrl = APIDomain + "api/lapi.svc/";
+   // var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://nusinterface.meteor.com/ivleLogin";
     var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000/ivleLogin";
 
     var myModuleInfo = null;
@@ -367,10 +368,13 @@ if (Meteor.isServer) {
       return t; 
     },
     tokenInsert : function(token){
+      if(Tokens.find({userId : Meteor.userId()}).count()==0)
+        {
        Tokens.insert({
         userId : Meteor.userId(),
         token : token
-       }); 
+       });
+       } 
     },
     
     todoInsert : function(text,priority){
