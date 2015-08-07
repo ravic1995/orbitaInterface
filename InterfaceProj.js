@@ -1,30 +1,6 @@
-/*if (Meteor.isClient) {
-  // counter starts at 0
-  Session.setDefault('counter', 0);
 
-  Template.hello.helpers({
-    counter: function () {
-      return Session.get('counter');
-    }
-  });
-
-  Template.hello.events({
-    'click button': function () {
-      // increment the counter when button is clicked
-      Session.set('counter', Session.get('counter') + 1);
-    }
-  });
-}
-
-if (Meteor.isServer) {
-  Meteor.startup(function () {
-    // code to run on server at startup
-  });
-}
-*/
 Tokens = new Mongo.Collection('tokens');//Meteor.userId()==token ;
 Todos = new Mongo.Collection('todos');//Metoer.userId() == todo == priority 
-//Calendars = new Mongo.Collection('calendars');//
 
 var Schemas = {};
 Schemas.Token = new SimpleSchema({
@@ -108,12 +84,6 @@ if(!(Meteor.loggingIn() || Meteor.user())){
     $('#login').modal('show');
 } 
 
-/*  if(!Meteor.userId()){
-    Blaze.render(Template.login , document.body );
-    //$('#login').modal('show');
-    //Router.go('/login');
-    $('#login').modal('show');
-  }*/
 
   Template.login.events({
     'click button' : function(event){
@@ -124,26 +94,16 @@ if(!(Meteor.loggingIn() || Meteor.user())){
   });
 
 
-//use onBefore actions as well as on after 
-//render page using the router and the routing this ?? 
-//make the template on rendered as a modal
-//////////
-/*Template.myTemplate.dayClick = function(date,jsEvent,view){
-  $('#EditEventModal').modal();
-              Calendars.insert({title:'New Item',start:date,end:date});
-              console.log(Calendars.find().fetch());
-              
-
-              console.log('click successful');
-}*/
 
 Template.task.events({
     "click .toggle-checked": function () {
       // Set the checked property to the opposite of its current value
-      Todos.update(this._id, {$set: {checked: ! this.checked}});
+      Meteor.call('updateTodo' , this._id);
+      //Todos.update(this._id, {$set: {checked: ! this.checked}});
     },
     "click .delete": function () {
-      Todos.remove(this._id);
+     Meteor.call('removeTodo' , this._id);
+     // Todos.remove(this._id);
     }
   });
  Template.todo.helpers({
@@ -323,31 +283,6 @@ Template.ivleLogin.rendered = function(){
   });
 }
 
-/*Meteor.methods({
-    weather : function(){        
-    var t = HTTP.get("http://api.openweathermap.org/data/2.5/weather?q=singapore&APPID=860925b0e2933e51a216953566d0964d").data;
-    return t;
-  },
-    addCalendarEvents : function(date , content){
-      Calendars.insert({userId : Meteor.userId() , date : date , content : content})
-    },
-    modules : function(){
-      var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=4DD98A4C7FF723C0FBFDE2965B5ED3EBF4F68AF8D58E3E043A9BD9B076FD22B0292B01595C97115352E3FED29546ED4FA0A9988A100C41A5FCCDA23EE7A0F83CBCE99EBB6F5828AA5F7B49D908139232B955BF4471964B82A117A0DF718C05EB5BA6ED9484FE18DEA814D1C2A6CEEB5AE226727F2B5C87F27F5C8ED74DE8B405CC29EDAEE89784A14ECFCD51E350393F61CB8AA42F17CBBB13ADFF8ABF5CF3A7CE75C1DE79882D695BAC4F9625FF431D822404C8ABD9932512F96CA8C726534211A5CF0C0476844C6AD82F8F46FE26D4A9C09B6C94D500AEF41E33FF8D4A488B29E6B57F9BD9E04CE6A947CD5BD10036' , {rejectUnauthorized: false});
-      return t; 
-    },
-
-    todoInsert : function(text,priority){
-       Todos.insert({
-        text: text,
-        priority : priority,
-        createdAt: new Date(),            // current time
-        owner: Meteor.userId(),           // _id of logged in user
-        username: Meteor.user().username  // username of logged in user
-      });
-    } 
-  });*/
-
-
 
 if (Meteor.isServer) {
   Meteor.methods({
@@ -355,14 +290,15 @@ if (Meteor.isServer) {
     var t = HTTP.get("http://api.openweathermap.org/data/2.5/weather?q=singapore&APPID=860925b0e2933e51a216953566d0964d").data;
     return t;
   },
+    updateTodo : function(id){
+      Todos.update(id, {$set: {checked: ! this.checked}});
+    },
+    removeTodo : function(id){
+      Todos.remove(id);
+     },
     addCalendarEvents : function(date , content){
       Calendars.insert({userId : Meteor.userId() , date : date , content : content})
     },
-   /* modules : function(token){
-      var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=' + token , {rejectUnauthorized: false});
-      return t; 
-    },
-    */
     modules : function(){
       var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=' + Tokens.findOne({userId : Meteor.userId()}).token , {rejectUnauthorized: false});
       return t; 

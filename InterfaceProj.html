@@ -18,7 +18,10 @@
       {{> rightcol}} 
     </div>
     </div>
-    <!--{{> googleDrive}}-->
+
+    <!--
+    {{> footer}}
+    {{> googleDrive}}-->
 </template>
 
 <template name = "header">
@@ -26,12 +29,15 @@
 	<div class="vc pull-left container-fluid"  flex >
 		
     <img src='logo.jpg' class="img-rounded" style="width:140px" />
-		Portal
+
+		<!--<img src='name.jpg' class="img-rounded" flex>-->
+    Portal Name  
+    
     
 	</div>
 	<div class="pull-right container-fluid"  flex>
 			<h3 class="text-center" style="color : white">{{timedis}}</h3>
-			<h5 class="text-center" style="color : white">Good Morning, User name </h5>
+			<h5 class="text-center" style="color : white">Good Night, User name </h5>
 	</div>
 	</div>
 </template>
@@ -48,7 +54,14 @@
     <div id="myTabContent" class="tab-content" style="padding:5px">
       {{#each module}}
         <div role="tabpanel" class="tab-pane fade in" id="{{this.CourseCode}}">
-         <p> {{this.CourseCode}} || {{this.CourseAcadYear}}</p>
+         <p> {{this.CourseCode}} || {{this.CourseName}}</p>
+         <ul>
+         {{#each this.Announcements}}
+         <li>
+           {{this}}
+         </li>
+         {{/each}}
+         </ul>
         </div>
       {{/each}}
     </div>
@@ -56,25 +69,19 @@
 
 
   <div class="container-fluid" >
-    <ul class="nav nav-tabs" style="padding: 5px" id="myTab" role="tablist">
-      <li role="presentation" class="active"><a href="#home2" id="home-tab2" role="tab" data-toggle="tab" aria-controls="home2" >Home</a></li>
-      <li role="presentation"><a href="#profile2" id="profile-tab2" role="tab" data-toggle="tab" aria-controls="profile2" >Profile</a></li>
-      <li role="presentation"><a href="#messages2" id="messages-tab2" role="tab" data-toggle="tab" aria-controls="messages2" >Messages</a></li>
+    <ul class="nav nav-tabs nav-justified flex" style="padding: 1px " id="myTab" role="tablist" >
+      {{#each module}}    
+      <li role="presentation" ><a href="#2{{this.CourseCode}}" role="tab" data-toggle="tab" aria-controls="{{this.CourseCode}}">{{this.CourseCode}}</a>
+      </li>
+      {{/each}}
     </ul>
       <div id="myTabContent" class="tab-content" style="padding:5px">
-        <div role="tabpanel" class="tab-pane fade active in" id="home2" aria-labelledby="home-tab2">
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod Home 2
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p> 
+      {{#each module}}
+        <div role="tabpanel" class="tab-pane fade in" id="2{{this.CourseCode}}">
+          <p> Files of workbin to be displayed</p>
         </div>
-        <div role="tabpanel" class="tab-pane fade" id="profile2" aria-labelledby="profile-tab2">
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod profile 2
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p> 
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="messages2" aria-labelledby="messages-tab2">
-         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod messages 2
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam</p> 
-        </div>
-      </div>
+      {{/each}}
+    </div>
   </div>
 </div>
 </template>
@@ -82,20 +89,8 @@
 <template name = "rightcol">
   <div class="panel panel-default"  >
   <div class="panel-heading" >
-    <h3 class="panel-title text-center">{{date}} | {{weather2}} </h3>
-    <img src= "{{icontag}}" >
-  </div>
-</div>
-<div class="panel panel-default" >
-  <div class="panel-heading" >
-    <h3 class="panel-title text-center">Worries of tomorrow</h3>
-  </div>
-  <div class="panel-body">
-  <ul>
-    <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod</li>
-    <li>tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,</li>
-    <li>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo</li>
-  </ul>
+    <h4 class="panel-title">{{date}} | {{weather2}} </h4>
+    <img src= "{{icontag}}" align="middle">
   </div>
 </div>
 <div class="panel panel-default">
@@ -123,27 +118,23 @@
   </div>
 </template>
 
-<template name="trial">
-<div>
-
-  <!-- Nav tabs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" ><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
-    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
-    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
-    <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
-  </ul>
-
-  <!-- Tab panes -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane" id="home">...</div>
-    <div role="tabpanel" class="tab-pane" id="profile">...</div>
-    <div role="tabpanel" class="tab-pane" id="messages">...</div>
-    <div role="tabpanel" class="tab-pane" id="settings">...</div>
-  </div>
-
-</div>
+<!--Footer --> 
+<template name="footer">
+  <footer class="footers">
+    <div class="container-fluid text-center">
+      <img src='deive.jpg' class="img-rounded" style="width:120px" align="left" />
+      <img src='dropbox.jpg' class="img-rounded" style="width:120px" align="left" />
+      <img src='nuswispers.jpg' class="img-rounded" style="width:120px" align="center" />
+      <img src='nusmods.jpg' class="img-rounded" style="width:120px" align="center"/>
+      <img src='nusmail.jpg' class="img-rounded" style="width:120px" align="right" />
+      <img src='whatsapp.jpg' class="img-rounded" style="width:120px" align="right" />
+      <img src='telegram.jpg' class="img-rounded" style="width:120px" align="right" />
+      
+      
+    </div>
+  </footer>
 </template>
+
 
 <!--Calendar --> 
 
@@ -159,7 +150,7 @@
 <template name="todo">
   <div class="container">
     <header>
-      <h1>Todo List ({{incompleteCount}})</h1>
+      <h4>Todo List ({{incompleteCount}})</h4>
 
       <label class="hide-completed">
         <input type="checkbox" checked="{{hideCompleted}}" />
