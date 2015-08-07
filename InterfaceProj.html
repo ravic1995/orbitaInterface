@@ -51,7 +51,8 @@
       </li>
       {{/each}}
     </ul>
-    <div id="myTabContent" class="tab-content" style="padding:5px">
+    <div id="myTabContent" class="tab-content" style="padding:5px ; border-radius: 25px;
+    border: 2px solid #ffffff">
       {{#each module}}
         <div role="tabpanel" class="tab-pane fade in" id="{{this.CourseCode}}">
          <p> {{this.CourseCode}} || {{this.CourseName}}</p>
@@ -75,7 +76,8 @@
       </li>
       {{/each}}
     </ul>
-      <div id="myTabContent" class="tab-content" style="padding:5px">
+      <div id="myTabContent" class="tab-content" style="padding:5px; border-radius: 25px;
+    border: 2px solid #ffffff;">
       {{#each module}}
         <div role="tabpanel" class="tab-pane fade in" id="2{{this.CourseCode}}">
           <p> Files of workbin to be displayed</p>
@@ -94,8 +96,8 @@
   </div>
 </div>
 <div class="panel panel-default">
-  <div id="calendar">
-    <button class="btn btn-default" id="cv">View Calendar</button>
+  <div>
+  {{> calendar}}
   </div>
   <div class="padding">
   {{> todo}}

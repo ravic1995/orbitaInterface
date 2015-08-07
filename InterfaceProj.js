@@ -41,10 +41,10 @@ Meteor.subscribe('calendar', function () {
   Template.leftcol.helpers({
     module : function(){
       var module = Meteor.call('modules',function(err,res){
-        console.log(res);
+        //console.log(res);
         //var results = res.data.Results;
         var results = res.data.Results;
-        console.log(results);
+        //console.log(results);
         Session.set('r' , results)
         });
       return Session.get('r');
@@ -184,7 +184,7 @@ Template.ivleLogin.rendered = function(){
             kv = p[l].split(/\=/);
             r[kv[0]] = kv[1] || true; //if no =value just set it as true
         }
-        console.log(r);
+       // console.log(r);
         return r;
     } ();
 
@@ -197,7 +197,7 @@ Template.ivleLogin.rendered = function(){
         Token = search.token;
         Session.set('token' , Token);
         //alert(Token);
-        console.log(Session.get('token'));
+        //console.log(Session.get('token'));
         Meteor.call('tokenInsert' , Session.get('token'));
     }
 
@@ -266,7 +266,7 @@ Template.ivleLogin.rendered = function(){
       // This function is called when the new task form is submitted
       var text = event.target.text.value;
       var priority = event.target.priority.value;
-      console.log(text +" " + priority);
+      //console.log(text +" " + priority);
 
        Meteor.call('todoInsert' , text , priority);
 
