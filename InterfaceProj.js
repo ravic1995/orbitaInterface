@@ -172,8 +172,8 @@ Template.ivleLogin.rendered = function(){
   var APIKey = "0J5cKRFGUQASyFHiJ07v4";
     var APIDomain = "https://ivle.nus.edu.sg/";
     var APIUrl = APIDomain + "api/lapi.svc/";
-   // var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://nusinterface.meteor.com/ivleLogin";
-    var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000/ivleLogin";
+    var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://nusinterface.meteor.com/ivleLogin";
+   // var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000/ivleLogin";
 
     var myModuleInfo = null;
 
