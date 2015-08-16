@@ -22,8 +22,8 @@ var defaults = {
 	aspectRatio: 1.35,
 	header: {
 		left: 'title',
-		center: '',
-		right: 'today prev,next'
+		center: ''
+		//right: 'today prev,next'
 	},
 	weekends: true,
 	weekNumbers: false,
@@ -45,9 +45,9 @@ var defaults = {
 	
 	// time formats
 	titleFormat: {
-		month: 'MMMM yyyy',
-		week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
-		day: 'dddd, MMM d, yyyy'
+		month: 'MMMM yyyy'
+		//week: "MMM d[ yyyy]{ '&#8212;'[ MMM] d yyyy}",
+		//day: 'dddd, MMM d, yyyy'
 	},
 	columnFormat: {
 		month: 'ddd',
@@ -70,10 +70,10 @@ var defaults = {
 		next: "<span class='fc-text-arrow'>&rsaquo;</span>",
 		prevYear: "<span class='fc-text-arrow'>&laquo;</span>",
 		nextYear: "<span class='fc-text-arrow'>&raquo;</span>",
-		today: 'today',
+		/*today: 'today',
 		month: 'month',
 		week: 'week',
-		day: 'day'
+		day: 'day'*/
 	},
 	
 	// jquery-ui theming

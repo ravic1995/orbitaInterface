@@ -28,6 +28,22 @@ Meteor.subscribe('calendar', function () {
     Meteor.subscribe('todos');
     
   Template.header.helpers({ 
+    day : function(){
+        //Date dt = new Date();
+    //    int hours = Session.get('time').getHours();
+      var t =  Session.get('time');
+      var hours = t.getHours();
+
+        if(hours>=1 || hours<=12){
+            return "Morning";
+        }else if(hours>=12 || hours<=16){
+            return "Afternoon";
+        }else if(hours>=16 || hours<=21){
+            return "Evening";
+        }else if(hours>=21 || hours<=24){
+            return "Night";
+        }
+    },
     timedis : function(){
       //new variable to keep track of the time 
     //then the time is returned in a desired format using a segment of moment js 
@@ -44,7 +60,7 @@ Meteor.subscribe('calendar', function () {
         //console.log(res);
         //var results = res.data.Results;
         var results = res.data.Results;
-        //console.log(results);
+        console.log(results);
         Session.set('r' , results)
         });
       return Session.get('r');
@@ -172,8 +188,8 @@ Template.ivleLogin.rendered = function(){
   var APIKey = "0J5cKRFGUQASyFHiJ07v4";
     var APIDomain = "https://ivle.nus.edu.sg/";
     var APIUrl = APIDomain + "api/lapi.svc/";
-    var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://nusinterface.meteor.com/ivleLogin";
-   // var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000/ivleLogin";
+   // var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://nusinterface.meteor.com/ivleLogin";
+    var LoginURL = APIDomain + "api/login/?apikey=0J5cKRFGUQASyFHiJ07v4&url=http://localhost:3000/ivleLogin";
 
     var myModuleInfo = null;
 
@@ -261,6 +277,12 @@ Template.ivleLogin.rendered = function(){
     Router.go('/');
 }
 
+Template.footer.events({
+  "click button" : function(event){
+    Meteor.logout();
+  }
+});
+
   Template.todo.events({
     "submit .new-task": function (event) {
       // This function is called when the new task form is submitted
@@ -310,6 +332,10 @@ if (Meteor.isServer) {
         userId : Meteor.userId(),
         token : token
        });
+       }
+       else
+       {
+        Tokens.update({userId : Meteor.userId()} , {token : token});
        } 
     },
     

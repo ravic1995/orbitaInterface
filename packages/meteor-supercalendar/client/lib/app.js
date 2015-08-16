@@ -53,8 +53,8 @@ SuperCalendar = {
       $calendar.html('').fullCalendar({
         header: {
           left: 'prev,next today',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay'
+          center: 'title'
+          //right: 'month,agendaWeek,agendaDay'
         },
         editable: false,
         events: entries,
