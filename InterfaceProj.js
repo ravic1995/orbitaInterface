@@ -44,6 +44,9 @@ Meteor.subscribe('calendar', function () {
             return "Night";
         }
     },
+    username : function(){
+      return Meteor.user().profile.name;
+    },
     timedis : function(){
       //new variable to keep track of the time 
     //then the time is returned in a desired format using a segment of moment js 
@@ -64,6 +67,9 @@ Meteor.subscribe('calendar', function () {
         Session.set('r' , results)
         });
       return Session.get('r');
+    },
+    permission : function(p){
+      return p === 'S'
     }
   });
 

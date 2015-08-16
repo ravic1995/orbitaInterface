@@ -34,7 +34,7 @@
 	</div>
 	<div class="pull-right container-fluid"  flex>
 			<h3 class="text-center" style="color : white">{{timedis}}</h3>
-			<h5 class="text-center" style="color : white">Good {{day}}, User name </h5>
+			<h5 class="text-center" style="color : white">Good {{day}}, {{username}}</h5>
 	</div>
 	</div>
 </template>
@@ -43,14 +43,17 @@
 <div class="container-fluid pull-left"  > 
   <div class="container-fluid" >
     <ul class="nav nav-tabs nav-justified flex" style="padding: 1px " id="myTab" role="tablist" >
-      {{#each module}}    
+      {{#each module}}   
+      {{#if permission this.Permission}} 
       <li role="presentation" ><a href="#{{this.CourseCode}}" role="tab" data-toggle="tab" aria-controls="{{this.CourseCode}}">{{this.CourseCode}}</a>
       </li>
+      {{/if}}
       {{/each}}
     </ul>
     <div id="myTabContent" class="tab-content" style="padding:5px ; border-radius: 25px;
     border: 2px solid #ffffff">
       {{#each module}}
+        {{#if permission this.Permission}} 
         <div role="tabpanel" class="tab-pane fade in" id="{{this.CourseCode}}">
          <p> {{this.CourseCode}} || {{this.CourseName}}</p>
          <ul>
@@ -61,6 +64,7 @@
          {{/each}}
          </ul>
         </div>
+        {{/if}}
       {{/each}}
     </div>
   </div>
@@ -69,16 +73,20 @@
   <div class="container-fluid" >
     <ul class="nav nav-tabs nav-justified flex" style="padding: 1px " id="myTab" role="tablist" >
       {{#each module}}    
+      {{#if permission this.Permission}} 
       <li role="presentation" ><a href="#2{{this.CourseCode}}" role="tab" data-toggle="tab" aria-controls="{{this.CourseCode}}">{{this.CourseCode}}</a>
       </li>
+      {{/if}}
       {{/each}}
     </ul>
       <div id="myTabContent" class="tab-content" style="padding:5px; border-radius: 25px;
     border: 2px solid #ffffff;">
       {{#each module}}
+      {{#if permission this.Permission}} 
         <div role="tabpanel" class="tab-pane fade in" id="2{{this.CourseCode}}">
           <p> Files of workbin to be displayed</p>
         </div>
+        {{/if}}
       {{/each}}
     </div>
   </div>
