@@ -1,7 +1,7 @@
 
 Tokens = new Mongo.Collection('tokens');//Meteor.userId()==token ;
 Todos = new Mongo.Collection('todos');//Metoer.userId() == todo == priority 
-
+Announce = new Mongo.Collection('announce');
 var Schemas = {};
 Schemas.Token = new SimpleSchema({
   userId :{
@@ -13,6 +13,25 @@ Schemas.Token = new SimpleSchema({
     label : "tokenOfUser",
   }
 });
+Schemas.Announce = new SimpleSchema({
+courseId : {
+  type : String , 
+  label : "courseId",
+},
+announcementId : {
+  type : String,
+  label : "announcementId",
+} ,
+description : {
+  type : String , 
+  label : "description",
+} ,
+title : {
+  type : String , 
+  label : "title",
+} 
+});
+Announce.attachSchema(Schemas.Announce);
 Tokens.attachSchema(Schemas.Token);
 
 
@@ -26,6 +45,7 @@ Meteor.subscribe('calendar', function () {
 });
     Meteor.subscribe('tokens');
     Meteor.subscribe('todos');
+    Meteor.subscribe('announce');
     
   Template.header.helpers({ 
     day : function(){
@@ -63,13 +83,33 @@ Meteor.subscribe('calendar', function () {
         //console.log(res);
         //var results = res.data.Results;
         var results = res.data.Results;
-        console.log(results);
+       // console.log(results);
         Session.set('r' , results)
         });
       return Session.get('r');
     },
-    permission : function(p){
-      return p === 'S'
+    permission : function(p ,t ){
+      return (p === 'S' && t === true);
+    }, 
+    announcement : function(id){
+      var t = [];
+      var to = Meteor.call('announcement' , id , function(err,res){
+        //t = res.data.Results; 
+        //t.push(res.data.Results);
+        res.data.Results.forEach(function(r){
+          console.log(r);
+          Meteor.call('addAnnounce' , id , r);
+          t.push(r);
+          //Meteor.call('addAnnounce' , id , r.ID , r.Description);
+        });
+        console.log(t);
+       // t.forEach(function(r){
+        //  Meteor.call('addAnnounce' , id , r.ID , r.Description);
+        //});
+       //Session.set('announcement' , t)
+      });
+      //return Session.get('announcement');
+      return Announce.find({courseId : id}).fetch();
     }
   });
 
@@ -331,13 +371,28 @@ if (Meteor.isServer) {
       var t = HTTP.get('https://ivle.nus.edu.sg/api/Lapi.svc/Modules?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken=' + Tokens.findOne({userId : Meteor.userId()}).token , {rejectUnauthorized: false});
       return t; 
     },
+    announcement : function(id){
+      var t = HTTP.get("https://ivle.nus.edu.sg/API/Lapi.svc/Announcements?APIKey=0J5cKRFGUQASyFHiJ07v4&AuthToken="+ Tokens.findOne({userId : Meteor.userId()}).token + "&CourseID=" + id + "&Duration=0",{rejectUnauthorized: false});
+      return t;
+    },
+    addAnnounce : function(cid , a){
+      if(Announce.find({courseId : cid , announcementId : a.ID}).count()===0)
+      {
+        Announce.insert({
+          courseId : cid ,
+          announcementId : a.ID ,
+          description : a.Description,
+          title : a.Title
+        });
+      }
+    },
     tokenInsert : function(token){
-      if(Tokens.find({userId : Meteor.userId()}).count()==0)
+      if(Tokens.find({userId : Meteor.userId()}).count()===0)
         {
        Tokens.insert({
         userId : Meteor.userId(),
         token : token
-       });
+       });  
        }
        else
        {
@@ -358,6 +413,9 @@ if (Meteor.isServer) {
 Meteor.startup(function () {
     Meteor.publish('calendar', function () {
      return Calendar.find();
+    });
+    Meteor.publish('announce', function () {
+     return Announce.find();
     });
     Meteor.publish('todos' , function(){
       return Todos.find();
