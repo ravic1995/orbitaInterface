@@ -15,6 +15,7 @@ body {
 	font-size: 40px;
 	padding: 4px;
 } 
+.tab-pane{ height:300px; overflow-y:scroll; width:100%; }
 
 .vc {
 	vertical-align: middle;
